@@ -1,0 +1,33 @@
+pkg load statistics
+clc
+
+% Load the training data from the CSV file
+training_data = csvread('results57.csv');
+X_train = training_data(:, 1:5); % Features
+y_train = training_data(:, 6); % Labels
+
+% Load the validation data from the CSV file
+validation_data = csvread('training_dat3.csv');
+X_val = validation_data(:, 1:5); % Features
+y_val = validation_data(:, 6); % Labels
+
+% Train an SVM model
+model = svmtrain(y_train, X_train, '-s 0.4 -t 2 -c 0.075 -g 0.9'); % Use appropriate parameters
+
+% Make predictions on the validation set
+[predicted_label, accuracy, decision_values] = svmpredict(y_val, X_val, model);
+
+% Display the accuracy
+disp("Accuracy");
+disp(accuracy(1));  % Display accuracy
+
+% Plot results
+figure;
+scatter(1:length(y_val), y_val, 'filled', 'DisplayName', 'Actual');
+hold on;
+scatter(1:length(predicted_label), predicted_label, 'DisplayName', 'Predicted');
+xlabel('Data Points');
+ylabel('Labels');
+title('Actual vs. Predicted Labels');
+legend;
+
